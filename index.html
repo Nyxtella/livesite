@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konnark Dey | Hallownest Archives</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- Split stylesheet: see style.css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ATMOSPHERE LAYERS: vignette + generated clouds/orbs/motes (filled by script.js) -->
+    <div class="vignette"></div>
+    <div id="clouds-container"></div>
+    <div id="abyss-orbs-container"></div>
+    <div id="motes-container"></div>
+
+    <div id="game-ui">
+        <header>
+            <div class="location-title" id="location-name">HALLOWNEST // SAVE SELECTION</div>
+            <!-- Vessel name: Konnark Dey — Integrated MSc. Student, Ultracold Atoms, NISER Bhubaneswar -->
+
+            <div class="header-controls">
+
+                <!-- ============================================================
+                     NEW: BACKGROUND MUSIC PLAYER
+                     Upload a local audio file to loop as background music.
+                     No track is bundled with the site; nothing plays until
+                     the visitor picks their own file.
+                     ============================================================ -->
+                <div class="music-control">
+                    <button class="text-btn" id="music-toggle-btn" title="Choose a track / play / pause">♪ PLAY MUSIC</button>
+                    <input type="file" id="music-file-input" accept="audio/*">
+                    <input type="range" class="music-volume" id="music-volume" min="0" max="1" step="0.01" value="0.5" title="Volume">
+                    <audio id="bg-audio"></audio>
+                </div>
+
+                <!-- ============================================================
+                     NEW: CUSTOM SVG UPLOADER — BOX CORNERS
+                     Replaces the default corner embellishment SVG on every
+                     save-slot / lore-box / charm-card, same position & size.
+                     ============================================================ -->
+                <div class="svg-control">
+                    <button class="text-btn" id="svg-corner-btn" title="Upload a custom SVG for box corners">◈ CORNER SVG</button>
+                    <input type="file" id="svg-corner-input" accept=".svg,image/svg+xml">
+                    <span class="svg-status" id="svg-corner-status"></span>
+                    <button class="text-btn reset-btn" id="svg-corner-reset-btn" title="Restore default corner art">RESET</button>
+                </div>
+
+                <!-- ============================================================
+                     NEW: CUSTOM SVG UPLOADER — SCROLLBAR
+                     Replaces the wavy scrollbar fill graphic, same track
+                     position and size (see #scrollbar-widget in style.css).
+                     ============================================================ -->
+                <div class="svg-control">
+                    <button class="text-btn" id="svg-scrollbar-btn" title="Upload a custom SVG for the scrollbar">◈ SCROLLBAR SVG</button>
+                    <input type="file" id="svg-scrollbar-input" accept=".svg,image/svg+xml">
+                    <span class="svg-status" id="svg-scrollbar-status"></span>
+                    <button class="text-btn reset-btn" id="svg-scrollbar-reset-btn" title="Restore default scrollbar art">RESET</button>
+                </div>
+
+                <button class="text-btn" id="mode-toggle-btn" onclick="toggleMode()">✦ MODE: VOID</button>
+                <button class="text-btn" id="back-to-menu-btn" onclick="openPage('save-menu', 'HALLOWNEST // SAVE SELECTION')">← RETURN TO SAVE SCREEN</button>
+            </div>
+        </header>
+
+        <div class="content-container no-scroll" id="viewport-container">
+
+            <!-- SAVE SCREEN HOME -->
+            <div class="game-page" id="save-menu" style="display: flex;">
+                <div class="save-screen-title">SELECT SAVE FILE</div>
+                <div class="save-slots-grid">
+
+                    <div class="save-slot decorate-corners" onclick="openPage('status', 'NISER BHUBANESWAR // THE VESSEL')">
+                        <div class="save-slot-info">
+                            <h3>FILE 1: STATUS & PROFILE</h3>
+                            <div class="save-slot-meta">KONNARK DEY // INTEGRATED MSc. 2021–2026</div>
+                        </div>
+                    </div>
+
+                    <div class="save-slot decorate-corners" onclick="openPage('skills', 'THE LABORATORY // COMBAT SPELLS')">
+                        <div class="save-slot-info">
+                            <h3>FILE 2: ARSENAL & SKILLS</h3>
+                            <div class="save-slot-meta">PROGRAMMING // SOFTWARE // TOOLS & LANGUAGES</div>
+                        </div>
+                    </div>
+
+                    <div class="save-slot decorate-corners" onclick="openPage('compendium', 'FORGOTTEN CROSSROADS // ARTIFACTS')">
+                        <div class="save-slot-info">
+                            <h3>FILE 3: COMPENDIUM & PROJECTS</h3>
+                            <div class="save-slot-meta">RESEARCH EXPERIENCE // PAST PROJECTS</div>
+                        </div>
+                    </div>
+
+                    <div class="save-slot decorate-corners" onclick="openPage('confidants', 'RESTING GROUNDS // COMMUNION')">
+                        <div class="save-slot-info">
+                            <h3>FILE 4: CONTACT & NETWORKS</h3>
+                            <div class="save-slot-meta">HONORS // OUTREACH // CORRESPONDENCE</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PAGE 1: STATUS -->
+            <div class="game-page" id="status" style="display: none;">
+                <div class="page-heading">
+                    THE VESSEL <span>STATUS: AWAKENED</span>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>[CODENAME: KONNARK DEY]</h3>
+                    <p>Integrated MSc. Student specializing in Ultracold Atoms. Currently completing a Physical Sciences degree at NISER Bhubaneswar, working at the intersection of atomic, molecular & optical (AMO) physics and quantum simulation.</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>EDUCATION</h3>
+                    <p>• Integrated MSc., Physical Sciences — NISER Bhubaneswar (2021–2026), CGPA 7.72/10.0, graduating May 2026.<br>
+                    • Senior Secondary — Vibgyor High School (2019–2021), Physics/Chemistry/Math/Biology/English, 92%.</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>RESEARCH INTERESTS</h3>
+                    <p>• Standard Model via AMO Physics<br>
+                    • Cavity QED Interactions<br>
+                    • Quantum Simulators<br>
+                    • Analogue Gravity in Quantum Systems</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>LANGUAGES & HOBBIES</h3>
+                    <p>Native: English, Hindi &nbsp;|&nbsp; Novice: Latin, Japanese<br>
+                    Hobbies: Music, Art, Etymology, Coding</p>
+                </div>
+            </div>
+
+            <!-- PAGE 2: SKILLS -->
+            <div class="game-page" id="skills" style="display: none;">
+                <div class="page-heading">
+                    ABILITIES & SPELLS <span>TECHNICAL ARSENAL</span>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>PROGRAMMING</h3>
+                    <p>Python, Java, C++, C#, LaTeX, Verilog</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>SOFTWARE</h3>
+                    <p>Zemax, LabView, Qiskit, CST, COMSOL</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>TOOLS & PLATFORMS</h3>
+                    <p>Git, Linux, CAD, Blender, MATLAB</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>RELEVANT COURSEWORK</h3>
+                    <p>Atoms, Molecules and Radiation; Many Body Dynamics; Advanced Quantum Mechanics; Quantum Optics; Advanced Solid State Physics; Special & General Relativity; Linear Algebra & Group Theory.</p>
+                </div>
+            </div>
+
+            <!-- ==================================================================
+                 PAGE 3: COMPENDIUM
+                 Each charm-card represents one research/project entry. Clicking
+                 "INSPECT ARTIFACT" opens the artifact modal (see #artifact-modal
+                 near the end of <body>) showing an optional image plus the full
+                 project detail text. All content is pulled from the
+                 ARTIFACT_DATA object in script.js — edit that object to add,
+                 remove, or attach an image to an entry (see README.md).
+                 ================================================================== -->
+            <div class="game-page" id="compendium" style="display: none;">
+                <div class="page-heading">
+                    HALLOWNEST ARTIFACTS <span>RESEARCH & PROJECTS</span>
+                </div>
+
+                <div class="page-subheading">RESEARCH EXPERIENCE</div>
+                <div class="charm-grid">
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Generation of Microtrap Arrays for Single Atom Trapping</div>
+                        <div class="charm-desc">MSc. Thesis, SPS NISER (Aug 2025–May 2026). Advisor: Dr. Ashok K. Mohapatra. Gaussian/non-Gaussian beam propagation, GS-algorithm microtraps via SLMs, Rb MOT setup.</div>
+                        <a class="charm-link" onclick="openArtifact('microtrap-arrays')">INSPECT ARTIFACT →</a>
+                    </div>
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Studying the Hubbard Model in Ultracold Atoms</div>
+                        <div class="charm-desc">Term Project, NISER (Mar–Apr 2026). Advisor: Anamitra Mukherjee. Mean-field study of the Hubbard model in a quadratic trap; wedding-cake and insulator-shell structures.</div>
+                        <a class="charm-link" onclick="openArtifact('hubbard-model')">INSPECT ARTIFACT →</a>
+                    </div>
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Study of 2- and 3-body Bound States</div>
+                        <div class="charm-desc">Term Project, NISER (Sep–Nov 2024). Advisor: Dr. Anamitra Mukherjee. Green's function analysis of bound states in NNN-interaction-limited Hamiltonians.</div>
+                        <a class="charm-link" onclick="openArtifact('bound-states')">INSPECT ARTIFACT →</a>
+                    </div>
+                </div>
+
+                <div class="page-subheading">PAST PROJECTS</div>
+                <div class="charm-grid">
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Statistical Field Theory — REYES Program</div>
+                        <div class="charm-desc">Independent study project undertaken through the REYES program, focused on statistical field theory.</div>
+                        <a class="charm-link" onclick="openArtifact('reyes-sft')">INSPECT ARTIFACT →</a>
+                    </div>
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ A Pedagogical Introduction to QCD</div>
+                        <div class="charm-desc">A self-directed reading project building up a pedagogical introduction to Quantum Chromodynamics.</div>
+                        <a class="charm-link" onclick="openArtifact('qcd-reading')">INSPECT ARTIFACT →</a>
+                    </div>
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Topological & Kondo Behavior in Fe-doped Cr₂Sn₂S₂</div>
+                        <div class="charm-desc">Investigation of topological and Kondo behavior in Fe-doped Cr₂Sn₂S₂ using ultrafast optics.</div>
+                        <a class="charm-link" onclick="openArtifact('ultrafast-optics')">INSPECT ARTIFACT →</a>
+                    </div>
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Geometrical Phase via Mach–Zehnder Interferometry</div>
+                        <div class="charm-desc">Simulation, generation, and experimental study of the geometrical (Berry) phase using an MZI setup.</div>
+                        <a class="charm-link" onclick="openArtifact('geometric-phase')">INSPECT ARTIFACT →</a>
+                    </div>
+                    <div class="charm-card decorate-corners">
+                        <div class="charm-title">❖ Weak Field Magnetometry via Vortex Beam Interferometry</div>
+                        <div class="charm-desc">Weak magnetic field sensing using interferometry with structured (vortex) light beams.</div>
+                        <a class="charm-link" onclick="openArtifact('vortex-magnetometry')">INSPECT ARTIFACT →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 4: CONFIDANTS -->
+            <div class="game-page" id="confidants" style="display: none;">
+                <div class="page-heading">
+                    RESTING GROUNDS <span>ESTABLISH COMMUNION</span>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>SECURE FREQUENCY CHANNELS</h3>
+                    <p>PHONE: +91-9373090510<br>
+                    CORRESPONDENCE: therealk.dey@gmail.com<br>
+                    CHRONICLES: LinkedIn (link in header of original CV)</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>HONORS & AWARDS</h3>
+                    <p>• DISHA Scholarship (2021) — Dept. of Atomic Energy, Govt. of India; 5-year scholarship for the Integrated MSc.<br>
+                    • NEST – AIR 300 (2021) — National Entrance Screening Test</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>EXTRACURRICULAR</h3>
+                    <p>Music: 3rd Position, Battle of Bands (2024)<br>
+                    Tournament: IISc Pravega (2025) — Permissioned blockchain for identity management</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>PRESENTATIONS & OUTREACH</h3>
+                    <p>• Poster: Study of Geometric Phase using Michelson Interferometry (2025) — Open Lab, NISER<br>
+                    • Poster: A Brief Overview of AFM Contact Models (2025) — Experimental Techniques, Term Presentation<br>
+                    • Demonstration: The Magnus Effect and its Applications (2025) — NISER Open Day<br>
+                    • Presentation: Topological States of Matter and Ultrafast Optics (2024) — Internal Lab Presentation</p>
+                </div>
+                <div class="lore-box decorate-corners">
+                    <h3>CONFERENCES & SEMINARS</h3>
+                    <p>Ultrafast Sciences (UFS) Conference (2024) — Organizing Committee<br>
+                    Thematic Meeting on Quantum Computing (2025) — Organizing Committee</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SVG WAVY SCROLLBAR (default asset; replaceable via the SCROLLBAR SVG uploader) -->
+        <div class="wavy-scrollbar-container" id="scrollbar-widget">
+            <svg class="wavy-svg" viewBox="0 0 30 600" preserveAspectRatio="none">
+                <path class="wavy-fill" id="wavy-fill-path" d="M 15,0 C 30,50 0,100 15,150 C 30,200 0,250 15,300 C 30,350 0,400 15,450 C 30,500 0,550 15,600" />
+            </svg>
+        </div>
+
+        <!-- ==================================================================
+             NEW: ARTIFACT DETAIL MODAL (Compendium / Projects)
+             Opened by clicking "INSPECT ARTIFACT →" on any charm-card. Content
+             (title, image, full detail text, and an "attach image" control per
+             artifact) is populated dynamically from ARTIFACT_DATA in script.js.
+             ================================================================== -->
+        <div class="artifact-modal-overlay" id="artifact-modal-overlay" onclick="closeArtifactOnOverlay(event)">
+            <div class="artifact-modal decorate-corners" id="artifact-modal">
+                <button class="artifact-modal-close" id="artifact-modal-close" title="Close">✕</button>
+
+                <div class="artifact-modal-title" id="artifact-modal-title">ARTIFACT NAME</div>
+                <div class="artifact-modal-meta" id="artifact-modal-meta">Meta line (advisor / dates)</div>
+
+                <div class="artifact-modal-image-wrap" id="artifact-modal-image-wrap">
+                    <img id="artifact-modal-image" alt="Artifact image" />
+                    <div class="artifact-modal-no-image" id="artifact-modal-no-image">No image attached</div>
+                </div>
+
+                <div class="artifact-modal-image-control">
+                    <button class="text-btn" id="artifact-image-btn">◈ ATTACH IMAGE</button>
+                    <input type="file" id="artifact-image-input" accept="image/*">
+                    <button class="text-btn reset-btn" id="artifact-image-reset-btn" title="Remove attached image">REMOVE IMAGE</button>
+                </div>
+
+                <div class="artifact-modal-body" id="artifact-modal-body">
+                    Full project detail text goes here.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Split script: see script.js -->
+    <script src="script.js"></script>
+</body>
+</html>
